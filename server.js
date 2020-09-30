@@ -30,20 +30,21 @@ const download = (uri, filename, callback) => {
 const results = [];
 
 function postProduct() {
-    fs.createReadStream("vjhongproducts.csv")
+    // products.csv is the csv file containing links to images
+    fs.createReadStream("products.csv")
     .pipe(csv())
     .on('data', (data) => results.push(data))
     .on('end', () => {
         const random = Math.floor(Math.random() * results.length);
         const product = results[random];
         const imageURL = product.MainImage ? product.MainImage : product['132'];
-        const name = product.name ? product.name : product['3'];
-        const price = product.price ? product.price : product['123'];
-        const special_price = product.special_price ? product.special_price : product['124'];
+        // const name = product.name ? product.name : product['3'];
+        // const price = product.price ? product.price : product['123'];
+        // const special_price = product.special_price ? product.special_price : product['124'];
           
         download(imageURL, 'product.jpg', () => {
             const randnum = Math.floor(Math.random() * 1000);
-            const message = `${name} at sale price of P${parseInt(price) == parseInt(special_price) || !special_price ? price : special_price} #lazada #seller #retail #cheap #reseller ${randnum} Link to shop: https://www.lazada.com.ph/shop/vj-hong/?spm=a2o4l.pdp.seller.1.15bf6f71alznuI&itemId=1214750431&channelSource=pdp`;
+            const message = `Hello world ${randnum}`;
             
             const b64content = fs.readFileSync('./product.jpg', { encoding: 'base64' })
             tweetWithImage(T, b64content, message, name);
